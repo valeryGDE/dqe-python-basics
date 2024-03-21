@@ -10,19 +10,35 @@ initial_text = ''' tHis iz your homeWork, copy these Text to variable.
  last iz TO calculate nuMber OF Whitespace characteRS in this Tex. caREFULL, not only Spaces, but ALL whitespaces. I got 87.
 '''
 
-whitespaces_sum = sum(1 for char in initial_text if char.isspace())
 
-print("Whitespaces number:", whitespaces_sum)
+def whitespaces_sum(text):
+    return sum(1 for char in text if char.isspace())
 
-capitalized_text = '. '.join(sentence.strip().capitalize() for sentence in initial_text.split('.'))
 
-all_words = initial_text.split()
+print("Whitespaces number:", whitespaces_sum(initial_text))
 
-last_words = [el for el in all_words if el.endswith('.')]
 
-sentence_from_last_words = ' '.join(last_words).capitalize().replace('.', '') + '.'
+def capitalize_text(text):
+    return '. '.join(sentence.strip().capitalize() for sentence in initial_text.split('.'))
 
-united_text = f"{capitalized_text}{sentence_from_last_words}"
+
+def split_all_words(text):
+    return text.split()
+
+
+def last_words(text):
+    return [el for el in split_all_words(text) if el.endswith('.')]
+
+
+def make_sentence_from_last_words(text):
+    return ' '.join(last_words(text)).capitalize().replace('.', '') + '.'
+
+
+def unite_texts(first_text, second_text):
+    return f"{first_text}{second_text}"
+
+
+united_text = unite_texts(capitalize_text(initial_text), make_sentence_from_last_words(initial_text))
 
 corrected_iz_text = united_text.replace(' iz ', ' is ')
 
