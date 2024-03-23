@@ -1,0 +1,13 @@
+News feed:
+
+News -----------------------------------
+This is the very first news.
+Gdansk, 23/03/2024 14.07
+
+PrivateAd ------------------------------
+Private Ad. Sell or buy.
+Actual until: 25/05/2024, 62 days left
+
+CustomMessage --------------------------
+Some custom message.I like it.
+Likes: 607
