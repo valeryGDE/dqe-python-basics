@@ -15,11 +15,12 @@ def whitespaces_sum(text):
     return sum(1 for char in text if char.isspace())
 
 
-print("Whitespaces number:", whitespaces_sum(initial_text))
+if __name__ == '__main__':
+    print("Whitespaces number:", whitespaces_sum(initial_text))
 
 
 def capitalize_text(text):
-    return '. '.join(sentence.strip().capitalize() for sentence in initial_text.split('.'))
+    return '. '.join(sentence.strip().capitalize() for sentence in text.split('.'))
 
 
 def split_all_words(text):
@@ -42,4 +43,5 @@ united_text = unite_texts(capitalize_text(initial_text), make_sentence_from_last
 
 corrected_iz_text = united_text.replace(' iz ', ' is ')
 
-print("Final result:", corrected_iz_text)
+if __name__ == '__main__':
+    print("Final result:", corrected_iz_text)
