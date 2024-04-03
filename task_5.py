@@ -3,6 +3,7 @@ import textwrap
 from datetime import datetime
 import random
 from task_3 import capitalize_text
+from task_7 import word_count, letter_analysis
 
 
 class Information:
@@ -34,6 +35,8 @@ class Information:
                     f.write('News feed:\n')
             with open(filepath, 'a') as f:
                 f.write(self.construct_info())
+            word_count(filepath)
+            letter_analysis(filepath)
             return True
         except Exception as e:
             print(f"An error occurred while appending the information to the file: {e}")
