@@ -13,8 +13,6 @@ def word_count(file_path):
         writer.writerow(['Word_count'])
         writer.writerow([word_count])
 
-    print(f'Word Count: {word_count} has been written in csv')
-
 
 def letter_analysis(file_path):
     with open(file_path, 'r') as f:

@@ -1,3 +1,4 @@
+import json
 import os
 import textwrap
 from datetime import datetime
@@ -74,6 +75,7 @@ class InformationHandler:
             return News(text, extra_data)
         elif info_type == 'PrivateAd':
             return PrivateAd(text, extra_data)
+
         elif info_type == 'CustomMessage':
             message = CustomMessage(text)
             if extra_data is not None:
@@ -84,16 +86,23 @@ class InformationHandler:
 
     def get_information_from_file(self, filepath):
         with open(filepath, 'r') as file:
-            info_type = file.readline().strip()
-            text = file.readline().strip()
-            if info_type == 'CustomMessage':
-                message = CustomMessage(text)
-                like_input = file.readline().strip()
-                message.like_message(like_input)
-                return message
-            else:
-                extra_data = file.readline().strip()
-                return self._create_information(info_type, text, extra_data)
+            contents = file.read().split('\n\n')
+            informations = []
+            for content in contents:
+                lines = content.strip().split('\n')
+                if len(lines) < 2:
+                    continue
+                info_type = lines[0].strip()
+                text = lines[1].strip()
+                if info_type == 'CustomMessage':
+                    message = CustomMessage(text)
+                    like_input = lines[2].strip() if len(lines) > 2 else None
+                    message.like_message(like_input)
+                    informations.append(message)
+                else:
+                    extra_data = lines[2].strip() if len(lines) > 2 else None
+                    informations.append(self._create_information(info_type, text, extra_data))
+            return informations
 
     def get_information_from_console(self):
         info_type = input("Enter the type of information ('News', 'PrivateAd', 'CustomMessage'): ").strip()
@@ -109,32 +118,42 @@ class InformationHandler:
             return message
         return self._create_information(info_type, text, extra_data)
 
-    def process_and_delete_file(self, filepath):
+    def get_information_from_json(self, json_path):
+        with open(json_path, 'r') as json_file:
+            data = json.load(json_file)
+        informations = []
+        for _, info_data in data.items():
+            info_type = info_data['InformationType']
+            text = info_data['Text']
+            extra_data = info_data['AdditionalData'] if 'AdditionalData' in info_data else None
+            informations.append(self._create_information(info_type, text, extra_data))
+        return informations
+
+    def process_and_delete(self, filepath, process_type):
+        get_information = self.get_information_from_file if process_type == 'file' else self.get_information_from_json
         successful_process = False
-
-        info_object = self.get_information_from_file(filepath)
-        if info_object:
-            if info_object.append_info_to_file():
-                successful_process = True
-
+        infos = get_information(filepath)
+        for info_object in infos:
+            if info_object:
+                if info_object.append_info_to_file():
+                    successful_process = True
         if successful_process:
             os.remove(filepath)
-            print(f"The file '{filepath}' has been successfully processed and deleted.")
+            print(f"The {process_type} '{filepath}' has been successfully processed and deleted.")
         else:
-            print("The file was not processed successfully, so it will not be deleted.")
+            print(f"The {process_type} was not processed successfully, so it will not be deleted.")
 
 
 handler = InformationHandler()
 
-input_source = input("Choose input source from a 'file' or 'console'? (file/console): ").strip().lower()
+input_source = input("Choose input source from a 'file', 'json', or 'console'? (file/json/console): ").strip().lower()
 
 info = None
-if input_source == 'file':
-    file_path = input("Please enter the path to the input file: ").strip()
-    handler.process_and_delete_file(file_path)
+if input_source in ('file', 'json'):
+    path = input(f"Please enter the path to the input {input_source}: ").strip()
+    handler.process_and_delete(path, input_source)
 elif input_source == 'console':
     info = handler.get_information_from_console()
     info.append_info_to_file()
 else:
-    print("Invalid input source provided. Please enter 'file' or 'console'.")
-
+    print("Invalid input source provided. Please enter 'file', 'json', or 'console'.")
