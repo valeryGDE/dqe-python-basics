@@ -40,3 +40,15 @@ class Information:
         except Exception as e:
             print(f"An error occurred while appending the information to the file: {e}")
             return False
+
+    def append_info_to_file_and_db(self, db):
+        try:
+            self.append_info_to_db(db)
+            self.append_info_to_file()
+            return True
+        except Exception as e:
+            print(f"An error occurred while appending the information to the file and database: {e}")
+            return False
+
+    def append_info_to_db(self, db):
+        raise NotImplementedError("This method must be implemented in a subclass.")

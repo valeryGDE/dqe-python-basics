@@ -11,7 +11,8 @@ from readers.xml_file_reader import XmlFileReader
 
 
 class InformationHandler:
-    def __init__(self):
+    def __init__(self, db):
+        self.db = db
         self.readers = {
             'file': TextFileReader(),
             'json': JsonFileReader(),
@@ -52,7 +53,7 @@ class InformationHandler:
 
         successful_process = False
         for info_object in informations:
-            if info_object.append_info_to_file():
+            if info_object.append_info_to_file_and_db(self.db):
                 successful_process = True
 
         if successful_process:

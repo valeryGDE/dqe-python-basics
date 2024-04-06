@@ -13,3 +13,11 @@ class CustomMessage(Information):
         elif like_it.lower() == 'no' and self.likes > 0:
             self.likes -= 1
         self.footer = f'Likes: {self.likes}'
+
+    def append_info_to_db(self, db):
+        if db.record_exists("CustomMessage", Text=self.text):
+            print(f"Duplicate information: {self.text}")
+            return False
+        else:
+            db.insert_record("CustomMessage", Text=self.text, Likes=self.likes)
+            return True

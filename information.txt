@@ -2,12 +2,12 @@ News feed:
 
 News -----------------------------------
 Today the weather is very sunny.
-Amsterdam, 05/04/2024 18.38
+Amsterdam, 06/04/2024 17.00
 
 PrivateAd ------------------------------
 Selling a bike, good condition.
-Actual until: 10/10/2025, 552 days left
+Actual until: 10/10/2025, 551 days left
 
 CustomMessage --------------------------
 Enjoy your day!
-Likes: 311
+Likes: 706
